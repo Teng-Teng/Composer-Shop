@@ -13,7 +13,7 @@ $result = $db->getAllItemsReturnObj();
 
 // echo $twig->render('index1.html.twig', array('name' => 'Fabien', 'name2' => '123'));
 
-echo $twig->render('index1.html.twig', array('results' => $result));
+echo $twig->render('indexTwig.html.twig', array('results' => $result));
 
 
 
