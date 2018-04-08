@@ -1,5 +1,5 @@
 <?php
-  require_once('database.php');
+  require_once('./PHP/database.php');
 ?>
 
 <!doctype html>
@@ -11,6 +11,8 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="./shop.css">
 
     <title>ZARA</title>
   </head>
@@ -27,11 +29,20 @@
             
           foreach($result as $thing) {
         ?>
+          
+          <div class="fixed-hint <?php
+              echo 'hint' . $thing->getId();
+            ?>">
+            <?php
+              echo $thing->getDescription();
+            ?>
+          </div>
+
           <div class="col-4">
-            <div class="card" style="width: 18rem; max-width:100%">
+            <div class="card" id="<?php echo 'hint' . $thing->getId();?>" >
               <img class="card-img-top" src="<?php echo $thing->getImgUrl(); ?>" alt="Card image cap">
               <div class="card-body">
-                <h5 class="card-title" style="min-height: 5rem">
+                <h5 class="card-title">
                   <?php
                   echo $thing->getName();
                   ?>
@@ -41,7 +52,7 @@
                   <b>
                     <span class="card-price">
                     <?php
-                    echo $thing->getPrice();
+                    echo $thing->getPrice() . " $";
                     ?>
                     </span>
                   
@@ -72,9 +83,10 @@
           }
 
         ?>
-        <div style="background-color: #ddd; color: #222; position:fixed; right: 2rem; bottom: 2rem; padding: 1rem 2.5rem; border-radius: 1rem">
-          Total: <span class="TotalPrice">0</span>
+        <div class="total-price">
+          Total: <span class="TotalPrice">0</span> $
         </div>
+        <button class="btn btn-warning price-btn">Submit</button>
       </div>
     </div>
     
@@ -86,6 +98,42 @@
 
     <script>
 
+      $('.card').mouseenter(function() {
+        var id = $(this).attr('id');
+        $("." + id).css('display', 'block');
+      });
+
+      $('.card').mouseleave(function() {
+        var id = $(this).attr('id');
+        $("." + id).css('display', 'none');
+      });
+
+      $('.price-btn').click(function() {
+        var totalPrice = $('.TotalPrice').text();
+
+        $.ajax({
+          url: "./PHP/submit.php",
+
+          data: {
+              total: totalPrice
+          },
+         
+          type: "POST",
+          dataType : "json",
+
+          success : function(data, textStatus, jqXHR){
+            alert(data.message);
+          }
+        })
+        .fail(function( xhr, status, errorThrown ) {
+          alert( "Sorry, there was a problem!" );
+          console.log( "Error: " + errorThrown );
+          console.log( "Status: " + status );
+          console.dir( xhr );
+        });
+
+      });
+
       $('.purchase').click(function() {
 
         var price = $(this).parents('.card-body').find('.card-price').text();
@@ -93,6 +141,7 @@
         var current_price = $('.TotalPrice').text();
         $('.TotalPrice').text((parseFloat(current_price) + parseFloat(price)).toFixed(2));
 
+        $(this).attr("disabled","true");
         // console.log(price);
 
       });
