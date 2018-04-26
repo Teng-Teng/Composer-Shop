@@ -5,19 +5,19 @@ Create a shop using Twig
 ### Installing Twig
 To use the Twig Templating Engine, you must first install it. The easiest way to install Twig is using composer. (See [Twig Installation](https://twig.symfony.com/doc/2.x/installation.html))
 
-Open your Bash Terminal (Git Bash on Windows or Terminal on macOS) and navigate to your week5 directory. It would look something like this:
+Open your Bash Terminal (Git Bash on Windows or Terminal on macOS) and navigate to your Composer-Shop directory. It would look something like this:
 
 ** macOS: **
 ```
-cd /Application/MAMP/htdocs/mtm6331/week5
+cd /Application/MAMP/htdocs/Composer-Shop
 ```
 
 ** Windows: **
 ```
-cd /c/MAMP/htdocs/mtm6331/week5
+cd /c/MAMP/htdocs/Composer-Shop
 ```
 
-Once in the week5 directory run the following command.
+Once in the Composer-Shop directory run the following command.
 
 ```
 composer require twig/twig:~2.0
